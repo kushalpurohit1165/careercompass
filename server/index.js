@@ -8,6 +8,8 @@ app.use(cors());
 app.use(express.json());
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
+const profileRoutes = require("./routes/profile");
+app.use("/api/profile", profileRoutes);
 
 app.get("/", (req, res) => {
   res.send("CareerCompass API is running");
