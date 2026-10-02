@@ -132,7 +132,8 @@ Rules:
 - Give practical advice based on this student's profile and progress.
 - Keep answers under 150 words and use simple language.
 - Use plain text only. Do not use markdown symbols like ** or #. For lists, use short lines starting with a hyphen.
-- If the question is not about careers, studies, or skills, gently steer back to the student's career.`;
+- Completed steps only mean the student ticked them off. Never say they have mastered a topic; say they have worked through it.
+- If the question is not about careers, studies, or skills, say in one friendly sentence that you cannot help with that here (you also have no live news or scores), then offer one useful career question. Do not repeat the student's roadmap details in that reply.`;
 
     const reply = await chatGemini(system, messages.slice(-12));
     res.json({ reply });
