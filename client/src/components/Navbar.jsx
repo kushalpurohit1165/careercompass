@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import { Compass, Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
@@ -13,8 +13,12 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const linkClass =
-    "px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition";
+  const linkClass = ({ isActive }) =>
+    `px-3 py-2 rounded-lg text-sm font-medium transition ${
+      isActive
+        ? "bg-violet-500/15 text-violet-600 dark:text-violet-300"
+        : "text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10"
+    }`;
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-950/60 border-b border-slate-200 dark:border-white/10">
@@ -40,18 +44,18 @@ export default function Navbar() {
 
           {user ? (
             <>
-              <Link to="/dashboard" className={linkClass}>
+              <NavLink to="/dashboard" className={linkClass}>
                 Dashboard
-              </Link>
-              <Link to="/profile" className={linkClass}>
+              </NavLink>
+              <NavLink to="/profile" className={linkClass}>
                 Profile
-              </Link>
-              <Link to="/roadmap" className={linkClass}>
+              </NavLink>
+              <NavLink to="/roadmap" className={linkClass}>
                 Roadmap
-              </Link>
-              <Link to="/chat" className={linkClass}>
+              </NavLink>
+              <NavLink to="/chat" className={linkClass}>
                 Mentor
-              </Link>
+              </NavLink>
               <button
                 onClick={handleLogout}
                 className="ml-1 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-violet-500 to-cyan-500 shadow-lg shadow-violet-500/30 hover:opacity-90 transition"
@@ -61,9 +65,9 @@ export default function Navbar() {
             </>
           ) : (
             <>
-              <Link to="/login" className={linkClass}>
+              <NavLink to="/login" className={linkClass}>
                 Login
-              </Link>
+              </NavLink>
               <Link
                 to="/signup"
                 className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-violet-500 to-cyan-500 shadow-lg shadow-violet-500/30 hover:opacity-90 transition"

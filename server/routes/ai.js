@@ -1,6 +1,7 @@
 const express = require("express");
 const User = require("../models/User");
 const Roadmap = require("../models/Roadmap");
+const Conversation = require("../models/Conversation");
 const auth = require("../middleware/auth");
 const { askGemini, chatGemini } = require("../services/gemini");
 
@@ -96,13 +97,65 @@ router.patch("/roadmap/steps/:stepId", auth, async (req, res) => {
   }
 });
 
-// Chat with the career mentor
+// List my chats (newest first)
+router.get("/conversations", auth, async (req, res) => {
+  try {
+    const list = await Conversation.find({ user: req.userId })
+      .select("title updatedAt")
+      .sort({ updatedAt: -1 });
+    res.json(list);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Open one chat
+router.get("/conversations/:id", auth, async (req, res) => {
+  try {
+    const convo = await Conversation.findOne({
+      _id: req.params.id,
+      user: req.userId,
+    });
+    if (!convo) return res.status(404).json({ message: "Chat not found" });
+    res.json(convo);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Delete one chat
+router.delete("/conversations/:id", auth, async (req, res) => {
+  try {
+    await Conversation.deleteOne({ _id: req.params.id, user: req.userId });
+    res.json({ ok: true });
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Chat with the career mentor (saves every message)
 router.post("/chat", auth, async (req, res) => {
   try {
-    const { messages } = req.body;
-    if (!Array.isArray(messages) || messages.length === 0) {
-      return res.status(400).json({ message: "No messages" });
+    const { conversationId, message } = req.body;
+    if (!message || !message.trim()) {
+      return res.status(400).json({ message: "No message" });
     }
+
+    let convo = null;
+    if (conversationId) {
+      convo = await Conversation.findOne({
+        _id: conversationId,
+        user: req.userId,
+      });
+    }
+    if (!convo) {
+      convo = new Conversation({
+        user: req.userId,
+        title: message.trim().slice(0, 40),
+        messages: [],
+      });
+    }
+    convo.messages.push({ role: "user", text: message.trim() });
 
     const user = await User.findById(req.userId);
     const roadmap = await Roadmap.findOne({ user: req.userId });
@@ -135,8 +188,15 @@ Rules:
 - Completed steps only mean the student ticked them off. Never say they have mastered a topic; say they have worked through it.
 - If the question is not about careers, studies, or skills, say in one friendly sentence that you cannot help with that here (you also have no live news or scores), then offer one useful career question. Do not repeat the student's roadmap details in that reply.`;
 
-    const reply = await chatGemini(system, messages.slice(-12));
-    res.json({ reply });
+    const history = convo.messages
+      .slice(-12)
+      .map((m) => ({ role: m.role, text: m.text }));
+
+    const reply = await chatGemini(system, history);
+    convo.messages.push({ role: "model", text: reply });
+    await convo.save();
+
+    res.json({ conversationId: convo._id, title: convo.title, reply });
   } catch (err) {
     console.log("Chat error:", err.message);
     res.status(500).json({ message: "Chat failed. Please try again." });
