@@ -2,7 +2,7 @@ const express = require("express");
 const User = require("../models/User");
 const Roadmap = require("../models/Roadmap");
 const auth = require("../middleware/auth");
-const { askGemini } = require("../services/gemini");
+const { askGemini, chatGemini } = require("../services/gemini");
 
 const router = express.Router();
 
@@ -67,7 +67,7 @@ Keep every description under 25 words.`;
         steps: (data.steps || []).map((s) => ({ ...s, done: false })),
         projects: data.projects || [],
       },
-      { new: true, upsert: true }
+      { new: true, upsert: true },
     );
 
     res.json(roadmap);
@@ -78,6 +78,7 @@ Keep every description under 25 words.`;
       .json({ message: "Could not generate roadmap. Please try again." });
   }
 });
+
 // Tick or untick a step
 router.patch("/roadmap/steps/:stepId", auth, async (req, res) => {
   try {
@@ -92,6 +93,52 @@ router.patch("/roadmap/steps/:stepId", auth, async (req, res) => {
     res.json(roadmap);
   } catch (err) {
     res.status(500).json({ message: "Server error" });
+  }
+});
+
+// Chat with the career mentor
+router.post("/chat", auth, async (req, res) => {
+  try {
+    const { messages } = req.body;
+    if (!Array.isArray(messages) || messages.length === 0) {
+      return res.status(400).json({ message: "No messages" });
+    }
+
+    const user = await User.findById(req.userId);
+    const roadmap = await Roadmap.findOne({ user: req.userId });
+    const p = user?.profile || {};
+
+    const done = roadmap
+      ? roadmap.steps.filter((s) => s.done).map((s) => s.title)
+      : [];
+    const pending = roadmap
+      ? roadmap.steps.filter((s) => !s.done).map((s) => s.title)
+      : [];
+
+    const system = `You are CareerCompass, a friendly AI career mentor for engineering students in India.
+
+About the student:
+- Name: ${user.name}
+- Branch: ${p.branch || "not set"}
+- Year: ${p.year || "not set"}
+- Current skills: ${(p.skills || []).join(", ") || "not set"}
+- Interests: ${p.interests || "not set"}
+- Target role: ${p.targetRole || "not set"}
+- Target company: ${p.targetCompany || "not set"}
+- Roadmap steps completed: ${done.join(", ") || "none yet"}
+- Roadmap steps still pending: ${pending.join(", ") || "no roadmap generated yet"}
+
+Rules:
+- Give practical advice based on this student's profile and progress.
+- Keep answers under 150 words and use simple language.
+- Use plain text only. Do not use markdown symbols like ** or #. For lists, use short lines starting with a hyphen.
+- If the question is not about careers, studies, or skills, gently steer back to the student's career.`;
+
+    const reply = await chatGemini(system, messages.slice(-12));
+    res.json({ reply });
+  } catch (err) {
+    console.log("Chat error:", err.message);
+    res.status(500).json({ message: "Chat failed. Please try again." });
   }
 });
 

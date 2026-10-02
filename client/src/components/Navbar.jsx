@@ -14,7 +14,7 @@ export default function Navbar() {
   };
 
   const linkClass =
-    "px-4 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition";
+    "px-3 py-2 rounded-lg text-sm font-medium text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-white/10 transition";
 
   return (
     <nav className="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-white/70 dark:bg-slate-950/60 border-b border-slate-200 dark:border-white/10">
@@ -29,7 +29,7 @@ export default function Navbar() {
           CareerCompass
         </Link>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-1 sm:gap-2">
           <button
             onClick={toggleTheme}
             aria-label="Toggle theme"
@@ -43,15 +43,18 @@ export default function Navbar() {
               <Link to="/dashboard" className={linkClass}>
                 Dashboard
               </Link>
-              <Link to="/roadmap" className={linkClass}>
-                Roadmap
-              </Link>
               <Link to="/profile" className={linkClass}>
                 Profile
               </Link>
+              <Link to="/roadmap" className={linkClass}>
+                Roadmap
+              </Link>
+              <Link to="/chat" className={linkClass}>
+                Mentor
+              </Link>
               <button
                 onClick={handleLogout}
-                className="px-4 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-violet-500 to-cyan-500 shadow-lg shadow-violet-500/30 hover:opacity-90 transition"
+                className="ml-1 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-violet-500 to-cyan-500 shadow-lg shadow-violet-500/30 hover:opacity-90 transition"
               >
                 Logout
               </button>

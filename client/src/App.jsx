@@ -6,6 +6,7 @@ import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import Profile from "./pages/Profile";
 import Roadmap from "./pages/Roadmap";
+import Chat from "./pages/Chat";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/roadmap" element={<Roadmap />} />
+        <Route path="/chat" element={<Chat />} />
       </Routes>
     </div>
   );
