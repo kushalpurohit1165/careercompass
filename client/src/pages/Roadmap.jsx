@@ -1,6 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
-import { Sparkles, RefreshCw, Target, Rocket, CheckCircle2 } from "lucide-react";
+import {
+  Sparkles,
+  RefreshCw,
+  Target,
+  Rocket,
+  CheckCircle2,
+  Check,
+} from "lucide-react";
 import api from "../api";
 import { useAuth } from "../context/AuthContext";
 
@@ -40,6 +47,20 @@ export default function Roadmap() {
       setGenerating(false);
     }
   };
+  const toggleStep = async (stepId) => {
+    try {
+      const { data } = await api.patch(`/ai/roadmap/steps/${stepId}`);
+      setRoadmap(data);
+    } catch (err) {
+      setError("Could not update step");
+    }
+  };
+
+  const doneCount = roadmap ? roadmap.steps.filter((s) => s.done).length : 0;
+  const percent =
+    roadmap && roadmap.steps.length
+      ? Math.round((doneCount / roadmap.steps.length) * 100)
+      : 0;
 
   const card =
     "p-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/70 dark:bg-white/5 backdrop-blur-md";
@@ -64,8 +85,8 @@ export default function Roadmap() {
           {generating
             ? "Generating..."
             : roadmap
-            ? "Regenerate"
-            : "Generate roadmap"}
+              ? "Regenerate"
+              : "Generate roadmap"}
         </button>
       </div>
 
@@ -98,7 +119,9 @@ export default function Roadmap() {
       {roadmap && (
         <div className="mt-8 space-y-8">
           <div className={card}>
-            <p className="text-slate-700 dark:text-slate-200">{roadmap.summary}</p>
+            <p className="text-slate-700 dark:text-slate-200">
+              {roadmap.summary}
+            </p>
             {roadmap.strengths?.length > 0 && (
               <div className="mt-4 flex flex-wrap gap-2">
                 {roadmap.strengths.map((s) => (
@@ -140,18 +163,49 @@ export default function Roadmap() {
 
           <section>
             <h2 className="flex items-center gap-2 text-xl font-semibold">
-              <CheckCircle2 size={20} className="text-cyan-500" /> Learning steps
+              <CheckCircle2 size={20} className="text-cyan-500" /> Learning
+              steps
             </h2>
+            <div className="mt-4">
+              <div className="flex justify-between text-sm text-slate-500 mb-1.5">
+                <span>
+                  {doneCount} of {roadmap.steps.length} steps done
+                </span>
+                <span>{percent}%</span>
+              </div>
+              <div className="h-2.5 rounded-full bg-slate-200 dark:bg-white/10 overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-linear-to-r from-violet-500 to-cyan-400 transition-all duration-500"
+                  style={{ width: `${percent}%` }}
+                />
+              </div>
+            </div>
             <div className="mt-4 space-y-3">
               {roadmap.steps.map((s, i) => (
                 <div key={s._id || i} className={`${card} flex gap-4`}>
-                  <div className="shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-bold text-white bg-linear-to-br from-violet-500 to-cyan-400">
-                    {i + 1}
-                  </div>
+                  <button
+                    onClick={() => toggleStep(s._id)}
+                    aria-label="Mark step as done"
+                    className={`shrink-0 w-9 h-9 rounded-full flex items-center justify-center font-bold text-white transition ${
+                      s.done
+                        ? "bg-emerald-500"
+                        : "bg-linear-to-br from-violet-500 to-cyan-400"
+                    }`}
+                  >
+                    {s.done ? <Check size={18} /> : i + 1}
+                  </button>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-semibold">{s.title}</h3>
-                      <span className="text-xs text-slate-500">{s.duration}</span>
+                      <h3
+                        className={`font-semibold ${
+                          s.done ? "line-through opacity-60" : ""
+                        }`}
+                      >
+                        {s.title}
+                      </h3>
+                      <span className="text-xs text-slate-500">
+                        {s.duration}
+                      </span>
                     </div>
                     <p className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                       {s.description}

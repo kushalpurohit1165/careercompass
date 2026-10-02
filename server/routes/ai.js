@@ -49,6 +49,7 @@ Return ONLY JSON in exactly this shape:
   "projects": [{ "title": "project name", "description": "what to build", "skills": ["skill"] }]
 }
 Give 4 to 6 skillGaps, 6 to 8 steps in learning order, and 3 projects.
+Write the summary in second person, speaking directly to the student (use "you").
 Keep every description under 25 words.`;
 
     const text = await askGemini(prompt, { json: true });
@@ -75,6 +76,22 @@ Keep every description under 25 words.`;
     res
       .status(500)
       .json({ message: "Could not generate roadmap. Please try again." });
+  }
+});
+// Tick or untick a step
+router.patch("/roadmap/steps/:stepId", auth, async (req, res) => {
+  try {
+    const roadmap = await Roadmap.findOne({ user: req.userId });
+    if (!roadmap) return res.status(404).json({ message: "Roadmap not found" });
+
+    const step = roadmap.steps.id(req.params.stepId);
+    if (!step) return res.status(404).json({ message: "Step not found" });
+
+    step.done = !step.done;
+    await roadmap.save();
+    res.json(roadmap);
+  } catch (err) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
