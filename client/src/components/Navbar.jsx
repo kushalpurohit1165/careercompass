@@ -43,6 +43,9 @@ export default function Navbar() {
               <Link to="/dashboard" className={linkClass}>
                 Dashboard
               </Link>
+              <Link to="/roadmap" className={linkClass}>
+                Roadmap
+              </Link>
               <Link to="/profile" className={linkClass}>
                 Profile
               </Link>
