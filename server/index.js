@@ -6,12 +6,16 @@ const mongoose = require("mongoose");
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 const authRoutes = require("./routes/auth");
 app.use("/api/auth", authRoutes);
+
 const profileRoutes = require("./routes/profile");
 app.use("/api/profile", profileRoutes);
+
 const aiRoutes = require("./routes/ai");
 app.use("/api/ai", aiRoutes);
+
 const toolsRoutes = require("./routes/tools");
 app.use("/api/tools", toolsRoutes);
 
@@ -25,4 +29,10 @@ mongoose
   .catch((err) => console.log("MongoDB error:", err.message));
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// Only start a local server when running on your own laptop
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+}
+
+module.exports = app;
