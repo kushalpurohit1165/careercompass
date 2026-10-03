@@ -15,6 +15,11 @@ export default function Tools() {
 
   if (!user) return <Navigate to="/login" />;
 
+  const switchTab = (name) => {
+    setTab(name);
+    setError("");
+  };
+
   const run = async (fn) => {
     setLoading(true);
     setError("");
@@ -59,18 +64,21 @@ export default function Tools() {
   ];
 
   return (
-    <div className="max-w-4xl mx-auto px-6 pt-28 pb-16">
+    <div className="max-w-5xl mx-auto px-6 pt-24 pb-8 min-h-screen flex flex-col">
       <h1 className="text-3xl font-bold">Career tools</h1>
       <p className="mt-1 text-sm text-slate-500">
         Resume feedback and interview practice, tailored to your target role.
       </p>
 
       <div className="mt-6 flex gap-2">
-        <button onClick={() => setTab("resume")} className={tabClass("resume")}>
+        <button
+          onClick={() => switchTab("resume")}
+          className={tabClass("resume")}
+        >
           <FileText size={16} /> Resume analysis
         </button>
         <button
-          onClick={() => setTab("interview")}
+          onClick={() => switchTab("interview")}
           className={tabClass("interview")}
         >
           <Briefcase size={16} /> Interview prep
@@ -89,17 +97,16 @@ export default function Tools() {
       )}
 
       {tab === "resume" && (
-        <div className="mt-6">
-          <div className={card}>
+        <div className="mt-6 flex-1 flex flex-col">
+          <div className={`${card} flex-1 flex flex-col`}>
             <label className="block mb-2 text-sm font-medium">
               Paste your resume text
             </label>
             <textarea
               value={resumeText}
               onChange={(e) => setResumeText(e.target.value)}
-              rows={10}
               placeholder="Paste the text of your resume here..."
-              className="w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-900 outline-none focus:border-violet-500 transition text-sm"
+              className="flex-1 min-h-80 w-full px-4 py-3 rounded-xl border border-slate-300 dark:border-white/15 bg-white dark:bg-slate-900 outline-none focus:border-violet-500 transition text-sm resize-none"
             />
             <div className="mt-4 flex items-center gap-4">
               <button
@@ -134,13 +141,29 @@ export default function Tools() {
                 </p>
               </div>
 
-              <div className={card}>
-                <h2 className="font-semibold">Strengths</h2>
-                <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-                  {resumeResult.strengths?.map((s, i) => (
-                    <li key={i}>• {s}</li>
-                  ))}
-                </ul>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div className={card}>
+                  <h2 className="font-semibold">Strengths</h2>
+                  <ul className="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+                    {resumeResult.strengths?.map((s, i) => (
+                      <li key={i}>• {s}</li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className={card}>
+                  <h2 className="font-semibold">Keywords to add</h2>
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {resumeResult.missingKeywords?.map((k) => (
+                      <span
+                        key={k}
+                        className="px-3 py-1 rounded-full text-xs font-medium bg-violet-500/15 text-violet-500"
+                      >
+                        {k}
+                      </span>
+                    ))}
+                  </div>
+                </div>
               </div>
 
               <div className={card}>
@@ -158,27 +181,13 @@ export default function Tools() {
                   ))}
                 </div>
               </div>
-
-              <div className={card}>
-                <h2 className="font-semibold">Keywords to add</h2>
-                <div className="mt-3 flex flex-wrap gap-2">
-                  {resumeResult.missingKeywords?.map((k) => (
-                    <span
-                      key={k}
-                      className="px-3 py-1 rounded-full text-xs font-medium bg-violet-500/15 text-violet-500"
-                    >
-                      {k}
-                    </span>
-                  ))}
-                </div>
-              </div>
             </div>
           )}
         </div>
       )}
 
       {tab === "interview" && (
-        <div className="mt-6">
+        <div className="mt-6 flex-1">
           <div
             className={`${card} flex flex-wrap items-center justify-between gap-4`}
           >
