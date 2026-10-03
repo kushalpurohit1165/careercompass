@@ -1,3 +1,4 @@
+import MotivationTile from "../components/MotivationTile";
 import { useEffect, useState } from "react";
 import { Link, Navigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -97,7 +98,7 @@ export default function Dashboard() {
           </p>
         )}
       </motion.div>
-
+        <MotivationTile percent={percent} />
       {!loading && !profileDone && (
         <div
           className={`${card} mt-8 flex flex-wrap items-center justify-between gap-4`}

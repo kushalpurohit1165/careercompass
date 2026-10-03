@@ -56,6 +56,9 @@ export default function Navbar() {
               <NavLink to="/chat" className={linkClass}>
                 Mentor
               </NavLink>
+              <NavLink to="/tools" className={linkClass}>
+                Tools
+              </NavLink>
               <button
                 onClick={handleLogout}
                 className="ml-1 px-4 py-2 rounded-lg text-sm font-semibold text-white bg-linear-to-r from-violet-500 to-cyan-500 shadow-lg shadow-violet-500/30 hover:opacity-90 transition"

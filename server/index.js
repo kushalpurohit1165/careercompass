@@ -12,6 +12,8 @@ const profileRoutes = require("./routes/profile");
 app.use("/api/profile", profileRoutes);
 const aiRoutes = require("./routes/ai");
 app.use("/api/ai", aiRoutes);
+const toolsRoutes = require("./routes/tools");
+app.use("/api/tools", toolsRoutes);
 
 app.get("/", (req, res) => {
   res.send("CareerCompass API is running");
