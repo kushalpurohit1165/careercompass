@@ -1,5 +1,5 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { Compass, Sun, Moon } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "../context/ThemeContext";
 import { useAuth } from "../context/AuthContext";
 
@@ -27,9 +27,7 @@ export default function Navbar() {
           to="/"
           className="flex items-center gap-2 font-bold text-xl text-slate-900 dark:text-white"
         >
-          <span className="p-1.5 rounded-lg bg-linear-to-br from-violet-500 to-cyan-400 text-white">
-            <Compass size={20} />
-          </span>
+          <img src="/logo.png" alt="CareerCompass logo" className="w-9 h-9" />
           CareerCompass
         </Link>
 
