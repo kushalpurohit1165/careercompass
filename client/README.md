@@ -28,8 +28,8 @@ Many students struggle to decide which skills to learn, which projects to build,
 - **AI career mentor**: a chatbot that knows the student's profile and progress, with saved chat history and a "New chat" option
 - **Resume analysis**: paste resume text to get a score, strengths, improvements, and missing keywords (the text is not stored)
 - **Interview preparation**: technical, behavioral, and company-specific practice questions with hints
-- **Dashboard**: stats, next recommended step, skills overview, and a daily motivation line
-- **Dark and light themes**: saved per user, with no flash on reload
+- **Dashboard**: stats, next recommended step, skills overview, and a motivation line that changes on every refresh
+- **Dark and light themes**: your choice is remembered in the browser, with no flash on reload
 
 ## Tech Stack
 
@@ -40,25 +40,7 @@ Many students struggle to decide which skills to learn, which projects to build,
 | Database | MongoDB Atlas with Mongoose |
 | Authentication | JSON Web Tokens (JWT), bcryptjs |
 | AI | Google Gemini API |
-| Tools | Git, GitHub, VS Code, Postman |
-
-## Screenshots
-
-| Landing page (dark) | Landing page (light) |
-|---|---|
-| ![Landing dark](docs/screenshots/01-landing-dark.png) | ![Landing light](docs/screenshots/02-landing-light.png) |
-
-| Dashboard | Profile |
-|---|---|
-| ![Dashboard](docs/screenshots/03-dashboard.png) | ![Profile](docs/screenshots/04-profile.png) |
-
-| Roadmap | AI mentor chat |
-|---|---|
-| ![Roadmap](docs/screenshots/05-roadmap.png) | ![Mentor chat](docs/screenshots/06-mentor-chat.png) |
-
-| Resume analysis | Interview prep |
-|---|---|
-| ![Resume analysis](docs/screenshots/07-resume-analysis.png) | ![Interview prep](docs/screenshots/08-interview-prep.png) |
+| Tools | Git, GitHub, VS Code |
 
 ## How It Works
 
