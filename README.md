@@ -68,13 +68,12 @@ careercompass/
 │       ├── context/        # Theme and Auth providers
 │       └── pages/          # Landing, Login, Signup, Dashboard,
 │                           # Profile, Roadmap, Chat, Tools
-├── server/                 # Express backend
-│   ├── middleware/         # JWT auth check
-│   ├── models/             # User, Roadmap, Conversation
-│   ├── routes/             # auth, profile, ai, tools
-│   ├── services/           # Gemini helper with retries
-│   └── index.js
-└── docs/screenshots/       # README images
+└── server/                 # Express backend
+    ├── middleware/         # JWT auth check
+    ├── models/             # User, Roadmap, Conversation
+    ├── routes/             # auth, profile, ai, tools
+    ├── services/           # Gemini helper with retries
+    └── index.js
 ```
 
 ## API Overview
@@ -116,7 +115,7 @@ cd server
 npm install
 ```
 
-Create a file named `.env` inside `server/` (see `.env.example`):
+Create a file named `.env` inside `server/`:
 
 | Variable | Description |
 |---|---|
