@@ -162,7 +162,7 @@ Open the address shown in the terminal (usually `http://localhost:5173`).
 ## Author
 
 **Kushal Purohit**<br>
-B.Tech Information Technology student at SKIT, Jaipur
+B.Tech Information Technology student at SKIT, Jaipur <br>
 GitHub: [@kushalpurohit1165](https://github.com/kushalpurohit1165)
 
 Built as an 5th semester ITR project.
