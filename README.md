@@ -33,14 +33,14 @@ Many students struggle to decide which skills to learn, which projects to build,
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React (Vite), Tailwind CSS, React Router, Axios, Framer Motion, Lucide icons |
-| Backend | Node.js, Express |
-| Database | MongoDB Atlas with Mongoose |
-| Authentication | JSON Web Tokens (JWT), bcryptjs |
-| AI | Google Gemini API |
-| Tools | Git, GitHub, VS Code |
+| Layer          | Technology                                                                   |
+| -------------- | ---------------------------------------------------------------------------- |
+| Frontend       | React (Vite), Tailwind CSS, React Router, Axios, Framer Motion, Lucide icons |
+| Backend        | Node.js, Express                                                             |
+| Database       | MongoDB Atlas with Mongoose                                                  |
+| Authentication | JSON Web Tokens (JWT), bcryptjs                                              |
+| AI             | Google Gemini API                                                            |
+| Tools          | Git, GitHub, VS Code                                                         |
 
 ## How It Works
 
@@ -78,18 +78,18 @@ careercompass/
 
 ## API Overview
 
-| Method | Endpoint | Description |
-|---|---|---|
-| POST | `/api/auth/signup` | Create an account |
-| POST | `/api/auth/login` | Log in and receive a token |
-| GET / PUT | `/api/profile` | Read or save the student profile |
-| GET / POST | `/api/ai/roadmap` | Get or generate the roadmap |
-| PATCH | `/api/ai/roadmap/steps/:stepId` | Tick or untick a roadmap step |
-| POST | `/api/ai/chat` | Send a message to the AI mentor |
-| GET | `/api/ai/conversations` | List saved chats |
-| GET / DELETE | `/api/ai/conversations/:id` | Open or delete a chat |
-| POST | `/api/tools/resume` | Analyze pasted resume text |
-| POST | `/api/tools/interview` | Generate interview questions |
+| Method       | Endpoint                        | Description                      |
+| ------------ | ------------------------------- | -------------------------------- |
+| POST         | `/api/auth/signup`              | Create an account                |
+| POST         | `/api/auth/login`               | Log in and receive a token       |
+| GET / PUT    | `/api/profile`                  | Read or save the student profile |
+| GET / POST   | `/api/ai/roadmap`               | Get or generate the roadmap      |
+| PATCH        | `/api/ai/roadmap/steps/:stepId` | Tick or untick a roadmap step    |
+| POST         | `/api/ai/chat`                  | Send a message to the AI mentor  |
+| GET          | `/api/ai/conversations`         | List saved chats                 |
+| GET / DELETE | `/api/ai/conversations/:id`     | Open or delete a chat            |
+| POST         | `/api/tools/resume`             | Analyze pasted resume text       |
+| POST         | `/api/tools/interview`          | Generate interview questions     |
 
 All routes except signup and login require a valid JWT.
 
@@ -117,13 +117,13 @@ npm install
 
 Create a file named `.env` inside `server/`:
 
-| Variable | Description |
-|---|---|
-| `PORT` | Port for the API (for example `5000`) |
-| `MONGO_URI` | Your MongoDB Atlas connection string |
-| `JWT_SECRET` | A long random string used to sign tokens |
-| `GEMINI_API_KEY` | Your Gemini API key |
-| `GEMINI_MODEL` | The Gemini model name to use |
+| Variable         | Description                              |
+| ---------------- | ---------------------------------------- |
+| `PORT`           | Port for the API (for example `5000`)    |
+| `MONGO_URI`      | Your MongoDB Atlas connection string     |
+| `JWT_SECRET`     | A long random string used to sign tokens |
+| `GEMINI_API_KEY` | Your Gemini API key                      |
+| `GEMINI_MODEL`   | The Gemini model name to use             |
 
 Start the server:
 
