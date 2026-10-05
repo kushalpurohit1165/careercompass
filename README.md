@@ -1,3 +1,5 @@
+Live demo: https://careercompass-ruddy.vercel.app
+
 <div align="center">
 
 <img src="client/public/logo.png" alt="CareerCompass logo" width="120" />
